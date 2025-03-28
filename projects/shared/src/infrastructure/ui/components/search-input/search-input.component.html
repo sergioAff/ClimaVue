@@ -1,1 +1,8 @@
-<p>search-input works!</p>
+<form action="">
+  <input
+    type="text"
+    placeholder="Search location..."
+    (change)="onChange($event)"
+    [value]="search"
+  />
+</form>

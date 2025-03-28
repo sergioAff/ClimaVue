@@ -6,3 +6,4 @@ export { StateFactory } from './domain/state/state.factory';
 export type { INavRouter } from './domain/model/navRouter.model';
 export { LogoComponent } from './infrastructure/ui/components/logo/logo.component';
 export { NavComponent } from './infrastructure/ui/components/nav-home/nav.component';
+export { SearchInputComponent } from './infrastructure/ui/components/search-input/search-input.component';
