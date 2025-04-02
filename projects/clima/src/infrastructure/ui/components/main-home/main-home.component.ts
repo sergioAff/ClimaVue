@@ -19,4 +19,21 @@ export class MainHomeComponent {
   handleFormSubmit(query: IRequiredQueryCity) {
     this.inputSubmit.emit(query);
   }
+
+  getFormattedDate(): string {
+    const date = new Date();
+    const options: Intl.DateTimeFormatOptions = { 
+      month: 'long', 
+      day: 'numeric', 
+      weekday: 'short' 
+    };
+    return date.toLocaleDateString('en-US', options);
+  }
+  
+  getCurrentTime(): string {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    return `${hours}:${minutes < 10 ? '0' + minutes : minutes} ${hours >= 12 ? 'pm' : 'am'}`;
+  }
 }
