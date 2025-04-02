@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../../shared/src/environment/environment';
-import { Observable } from 'rxjs';
+import { environment } from 'shared';
+import { Observable, map } from 'rxjs';
 import { IWeather } from '../../domain/model/IWeather';
+import { IRequiredQueryCity } from '../../domain/model/ICity';
 
 @Injectable({
   providedIn: 'root',
@@ -12,10 +13,12 @@ export class GetWeatherService {
   private apiUrl = environment.apiWeather;
   private apiKey = environment.apiKeyWeather;
 
-  execute(query: string): Observable<IWeather[]> {
-    return this.http.get<IWeather[]>(
-      `${this.apiUrl}${query}&sections=current%2Chourly&language=en&units=metric&key=${this.apiKey}`,
+  execute(placeId: string): Observable<IWeather[]> {
+    return this.http.get<IWeather>(
+      `${this.apiUrl}${placeId}&sections=current%2Chourly&language=en&units=metric&key=${this.apiKey}`,
       { headers: this.getHeaders() }
+    ).pipe(
+      map(response => [response as IWeather]) 
     );
   }
 

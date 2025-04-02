@@ -1,8 +1,8 @@
-import { inject, Inject, Injectable, OnInit } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { GetBgService } from '../infrastructure/services/get-bg.service';
 import { State } from '../domain/state';
 import { Observable, Subscription, tap } from 'rxjs';
-import { IExecuteResponse, IRequiredQueryBg } from '../domain/model/IBg';
+import { IExecuteResponse } from '../domain/model/IBg';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ import { IExecuteResponse, IRequiredQueryBg } from '../domain/model/IBg';
 export class GetBackgroundUseCase {
   private readonly _service = inject(GetBgService);
   private readonly _state = inject(State);
-  private subscriptions!: Subscription;
+  private subscriptions: Subscription = new Subscription();
 
   bg$(): Observable<IExecuteResponse[]> {
     return this._state.wheather.bg.$() as Observable<IExecuteResponse[]>;
@@ -24,7 +24,7 @@ export class GetBackgroundUseCase {
     this.subscriptions.unsubscribe();
   }
 
-  execute(bg: IRequiredQueryBg) {
+  execute(bg: string) {
     this.subscriptions.add(
       this._service
         .execute(bg)

@@ -1,7 +1,7 @@
 <li
-  class="font-medium text-2xl underline-offset-8 transition-transform duration-150 ease-in-out hover:scale-105"
+  class="font-medium text-2xl underline-offset-8 transition-transform duration-150 ease-in-out hover:scale-105 z-10"
 >
-  <a [routerLink]="link.path" [class.underline]="isRouterActive(link)">
+  <a [routerLink]="link.path" [class.underline]="isRouterActive(link)" class="z-10">
     {{ link.name }}
   </a>
 </li>

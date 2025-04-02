@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { GetCityPrefixService } from '../infrastructure/services/get-city-prefix.service';
 import { State } from '../domain/state';
-import { Observable, Subscription, tap, map } from 'rxjs';
+import { Observable, Subscription, tap, map, catchError, of } from 'rxjs';
 import { ILocation, IRequiredQueryCity } from '../domain/model/ICity';
 
 @Injectable({
@@ -10,7 +10,7 @@ import { ILocation, IRequiredQueryCity } from '../domain/model/ICity';
 export class GetCityPrefixUseCase {
   private readonly _service = inject(GetCityPrefixService);
   private readonly _state = inject(State);
-  private subscriptions!: Subscription;
+  private subscriptions: Subscription = new Subscription();
 
   cityPrefix$() {
     return this._state.wheather.cityPrefix.$() as Observable<ILocation[]>;
@@ -25,28 +25,32 @@ export class GetCityPrefixUseCase {
   }
 
   execute(query: IRequiredQueryCity) {
+    if (!query || !query.query || query.query.trim() === '') {
+      console.error('Empty query provided to GetCityPrefixUseCase.execute()');
+      return;
+    }
+
     this.subscriptions.add(
       this._service
         .execute(query)
         .pipe(
-          map((result: any) => {
-            return result.map((item: any) => ({
-              name: item.name,
-              place_id: item.place_id,
-              adm_area1: item.adm_area1,
-              adm_area2: item.adm_area2,
-              country: item.country,
-              lat: item.lat,
-              lon: item.lon,
-              timezone: item.timezone,
-              type: item.type,
-            })) as ILocation[];
-          }),
           tap((locations: ILocation[]) => {
-            this._state.wheather.cityPrefix.set(locations);
+            if (locations && locations.length > 0) {
+              this._state.wheather.cityPrefix.set(locations);
+            } else {
+              console.warn('No locations found for query:', query.query);
+            }
+          }),
+          catchError(error => {
+            console.error('Error fetching city prefix data:', error);
+            return of([]);
           })
         )
         .subscribe()
     );
+  }
+
+  snapshot() {
+    return this._state.wheather.cityPrefix.snapshot();
   }
 }

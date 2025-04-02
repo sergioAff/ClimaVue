@@ -1,17 +1,41 @@
-import { Component, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+
 @Component({
   selector: 'lib-search-input',
-  imports: [],
+  imports: [MatIconModule, ReactiveFormsModule],
   templateUrl: './search-input.component.html',
 })
-export class SearchInputComponent {
-  @Output() search: string = '';
+export class SearchInputComponent implements OnInit {
+  cityForm!: FormGroup;
+  errorMessage: string = '';
+  @Output() formSubmit = new EventEmitter<string>();
 
-  constructor() {}
+  constructor(private fb: FormBuilder) {}
 
-  onChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.search = input.value;
+  ngOnInit() {
+    this.cityForm = this.fb.group({
+      city: ['', Validators.required],
+    });
+
+    this.cityForm.valueChanges.subscribe((value) => {
+      this.errorMessage = '';
+    });
+  }
+
+  onSubmit() {
+    if (this.cityForm.valid) {
+      this.errorMessage = '';
+      const FormData = this.cityForm.value.city.trim();
+      this.formSubmit.emit(FormData);
+    } else {
+      this.errorMessage = 'Please enter a valid city name';
+    }
   }
 }

@@ -1,8 +1,18 @@
-<form action="">
-  <input
-    type="text"
-    placeholder="Search location..."
-    (change)="onChange($event)"
-    [value]="search"
-  />
-</form>
+<div>
+  <form
+    [formGroup]="cityForm"
+    (ngSubmit)="onSubmit()"
+    class="border-2 border-gray-300 rounded-xl flex items-center gap-6 p-2 w-[80dvw] md:w-[50dvw] lg:w-[35dvw] bg-white/30 backdrop-blur-sm"
+  >
+    <button type="submit" class="flex items-center justify-center">
+      <mat-icon class="z-10 hover:cursor-pointer">search</mat-icon>
+    </button>
+    <input
+      type="text"
+      placeholder="Search location..."
+      formControlName="city"
+      class="focus:outline-none text-gray-800 tracking-wide font-semibold"
+    />
+  </form>
+  <p class="text-red-500 font-semibold">{{ errorMessage }}</p>
+</div>

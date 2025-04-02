@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../../shared/src/environment/environment';
+import { environment } from 'shared';
 import { createClient } from 'pexels';
 import {
   IRequiredQueryBg,
@@ -15,10 +15,8 @@ import { map } from 'rxjs/operators';
 export class GetBgService {
   private client = createClient(environment.apiKeyWallpaper);
 
-  execute(query: IRequiredQueryBg): Observable<IExecuteResponse> {
-    return from(
-      this.client.photos.search({ query: query.query, per_page: 1 })
-    ).pipe(
+  execute(query: string): Observable<IExecuteResponse> {
+    return from(this.client.photos.search({ query: query, per_page: 1 })).pipe(
       map((response: any) => ({
         photos: response.photos.map((photo: any) => ({
           id: photo.id,

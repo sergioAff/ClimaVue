@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../../shared/src/environment/environment';
+import { environment } from 'shared';
 import { ILocation, IRequiredQueryCity } from '../../domain/model/ICity';
 import { Observable } from 'rxjs';
 
@@ -14,7 +14,7 @@ export class GetCityPrefixService {
 
   execute(query: IRequiredQueryCity): Observable<ILocation[]> {
     return this.http.get<ILocation[]>(
-      `${this.apiUrl}${query}&language=en&key=${this.apiKey}`,
+      `${this.apiUrl}${query.query}&language=en&key=${this.apiKey}`,
       {
         headers: this.getHeaders(),
       }

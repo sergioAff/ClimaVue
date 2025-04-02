@@ -1,1 +1,18 @@
-<lib-main-home></lib-main-home>
+<div class="min-h-screen w-full relative">
+  <div class="absolute inset-0 z-0">
+    <img *ngIf="backgroundImage$ | async as backgroundImage" 
+         [src]="backgroundImage" 
+         class="w-full h-full object-cover filter blur-md brightness-75" 
+         alt="Background">
+
+  </div>
+
+  <div class="relative z-10">
+    <lib-main-home 
+      (inputSubmit)="handleInputSubmit($event)"
+      [weatherData]="(weatherData$ | async) ?? []"
+      [isLoading]="isLoading"
+      [backgroundImage]="backgroundImage$ | async">
+    </lib-main-home>
+  </div>
+</div>
