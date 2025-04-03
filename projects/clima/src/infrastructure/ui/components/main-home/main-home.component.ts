@@ -1,13 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { WeatherCard, WeatherCardComponent, LoadingSpinnerComponent } from 'shared';
+import { WeatherCard, LoadingSpinnerComponent } from 'shared';
 import { IRequiredQueryCity } from '../../../../domain/model/ICity';
-import { NgFor, NgIf } from '@angular/common';
+import {  NgIf } from '@angular/common';
 import { SearchFormComponent } from '../../forms/search-form/search-form.component';
-
+import { CurrentWeatherComponent } from '../current-weather/current-weather.component';
+import { HourlyForecastComponent } from '../hourly-forecast/hourly-forecast.component';
+import { NoDataMessageComponent } from '../no-data-message/no-data-message.component';
 @Component({
   selector: 'lib-main-home',
   standalone: true,
-  imports: [NgFor, NgIf, LoadingSpinnerComponent, WeatherCardComponent, SearchFormComponent],
+  imports: [ NgIf, LoadingSpinnerComponent, SearchFormComponent, CurrentWeatherComponent, HourlyForecastComponent, NoDataMessageComponent],
   templateUrl: './main-home.component.html',
 })
 export class MainHomeComponent {

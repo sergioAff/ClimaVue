@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { HeaderHomeComponent } from '../../components/header-home/header-home.component';
 import { INavRouter } from 'shared';
+import { AppHeaderComponent } from '../../components/app-header/app-header.component';
 
 @Component({
   selector: 'lib-header',
-  imports: [HeaderHomeComponent],
+  imports: [AppHeaderComponent],
   templateUrl: './header.component.html',
 })
 export class HeaderComponent {

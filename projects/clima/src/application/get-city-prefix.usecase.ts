@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { GetCityPrefixService } from '../infrastructure/services/get-city-prefix.service';
 import { State } from '../domain/state';
-import { Observable, Subscription, tap, map, catchError, of } from 'rxjs';
+import { Observable, Subscription, tap, catchError, of } from 'rxjs';
 import { ILocation, IRequiredQueryCity } from '../domain/model/ICity';
 
 @Injectable({

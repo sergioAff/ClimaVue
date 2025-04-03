@@ -3,16 +3,16 @@ import { MainHomeComponent } from '../../components/main-home/main-home.componen
 import { GetWeatherUseCase } from '../../../../application/get-wheater.usecase';
 import { IWeather } from '../../../../domain/model/IWeather';
 import { IRequiredQueryCity } from '../../../../domain/model/ICity';
-import { Observable, BehaviorSubject, Subscription, catchError, of, tap, filter, switchMap, finalize } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription, catchError, of, tap, switchMap, finalize } from 'rxjs';
 import { GetBackgroundUseCase } from '../../../../application/get-bg.usecase';
 import { GetCityPrefixUseCase } from '../../../../application/get-city-prefix.usecase';
-import { WeatherCard } from 'shared';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { BackgroundComponent, WeatherCard } from 'shared';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'lib-main',
   standalone: true,
-  imports: [MainHomeComponent, AsyncPipe, NgIf],
+  imports: [MainHomeComponent, AsyncPipe, BackgroundComponent],
   templateUrl: './main.component.html',
 })
 export class MainComponent implements OnInit, OnDestroy {
@@ -21,9 +21,11 @@ export class MainComponent implements OnInit, OnDestroy {
   private readonly _bgUseCase = inject(GetBackgroundUseCase);
   
   private weatherCardsSubject = new BehaviorSubject<WeatherCard[]>([]);
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  
   public weatherData$ = this.weatherCardsSubject.asObservable();
   public backgroundImage$!: Observable<string | null>;
-  public isLoading: boolean = false;
+  public isLoading$ = this.loadingSubject.asObservable();
   
   private lastSearchedCity: string = '';
   private subscription = new Subscription();
@@ -34,7 +36,7 @@ export class MainComponent implements OnInit, OnDestroy {
     }
     
     this.lastSearchedCity = value.query;
-    this.isLoading = true;
+    this.loadingSubject.next(true);
     console.log('Starting search for:', value.query);
     
     this.weatherCardsSubject.next([]);
@@ -43,15 +45,16 @@ export class MainComponent implements OnInit, OnDestroy {
 
     this._cityPrefixUseCase.execute(value);
     
+    // Safety timeout to ensure spinner doesn't stay active forever
     const spinnerTimeout = setTimeout(() => {
-      this.isLoading = false;
+      this.loadingSubject.next(false);
     }, 15000);
 
     const sub = this._cityPrefixUseCase.cityPrefix$().pipe(
       tap(locations => {
         console.log('Got locations:', locations);
         if (!locations || locations.length === 0) {
-          this.isLoading = false;
+          this.loadingSubject.next(false);
           clearTimeout(spinnerTimeout);
           return;
         }
@@ -76,18 +79,18 @@ export class MainComponent implements OnInit, OnDestroy {
           this.weatherCardsSubject.next(cards);
         }
 
-        this.isLoading = false;
+        this.loadingSubject.next(false);
         clearTimeout(spinnerTimeout);
       }),
       catchError(error => {
         console.error('Error in weather data stream:', error);
-        this.isLoading = false;
+        this.loadingSubject.next(false);
         clearTimeout(spinnerTimeout);
         return of([]);
       }),
       finalize(() => {
         console.log('Weather data stream finalized');
-        this.isLoading = false;
+        this.loadingSubject.next(false);
         clearTimeout(spinnerTimeout);
       })
     ).subscribe();
@@ -120,6 +123,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this._bgUseCase.destroySubscriptions();
     this.subscription.unsubscribe();
     this.weatherCardsSubject.complete();
+    this.loadingSubject.complete();
   }
 
   private mapToWeatherCards(weatherData: IWeather[], cityName: string): WeatherCard[] {
@@ -139,7 +143,7 @@ export class MainComponent implements OnInit, OnDestroy {
         windSpeed: weather.current.wind.speed,
         visibility: 10,
         pressure: 1000,
-        icon: `https://www.meteosource.com/static/img/ico/weather/${weather.current.icon}.svg`
+        icon: weather.current.icon ? `https://www.meteosource.com/static/img/ico/weather/${weather.current.icon}.svg` : ''
       };
       
       const hourlyWeatherCards: WeatherCard[] = weather.hourly?.data
@@ -153,7 +157,7 @@ export class MainComponent implements OnInit, OnDestroy {
           windSpeed: hourlyData.wind.speed,
           visibility: 10,
           pressure: 1000,
-          icon: `https://www.meteosource.com/static/img/ico/weather/${hourlyData.icon}.svg`
+          icon: hourlyData.icon ? `https://www.meteosource.com/static/img/ico/weather/${hourlyData.icon}.svg` : ''
         })) || [];
       
       return [currentWeatherCard, ...hourlyWeatherCards];

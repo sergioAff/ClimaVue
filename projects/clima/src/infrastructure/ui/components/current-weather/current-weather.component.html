@@ -1,0 +1,26 @@
+<div class="relative overflow-hidden bg-blue-500/20 hover:outline outline-blue-500/50 transition-all hover:cursor-pointer duration-200 hover:outline-offset-4 w-full rounded-3xl  shadow-xl p-8">
+    <div class="flex flex-col md:flex-row w-full  justify-between items-center md:items-start ">
+      <div class="">
+        <div class="flex items-center">
+          <h2 class="text-2xl font-semibold">{{ weather.city }}</h2>
+        </div>
+        <p class="text-white/80 mt-1">{{ formattedDate }}</p>
+      </div>
+      <div class="flex items-center mt-4 md:mt-0 gap-3">
+        <span class="text-6xl font-bold tracking-wide">{{ weather.temperature }}°C</span>
+        <img *ngIf="weather.icon" [src]="weather.icon" alt="Weather condition" class="w-24 h-24">
+      </div>
+    </div>
+    
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
+      <app-weather-metric 
+        *ngFor="let metric of weatherMetrics"
+        [label]="metric.label"
+        [value]="metric.value()"
+        [unit]="metric.unit">
+      </app-weather-metric>
+    </div>
+    
+    <div class="absolute -left-20 -bottom-20 rounded-full w-64 h-64 bg-white/5"></div>
+    <div class="absolute -right-20 -top-20 rounded-full w-64 h-64 bg-white/5"></div>
+  </div>
