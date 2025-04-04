@@ -1,0 +1,1 @@
+export const environment = { production: true, apiKeyWeather: "${apiKeyWeather}", apiKeyWallpaper: "${apiKeyWallpaper}", apiWeatherGetPlacesPrefix: "${apiWeatherGetPlacesPrefix}", apiWeather: "${apiWeather}", };
