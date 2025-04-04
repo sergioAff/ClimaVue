@@ -1,0 +1,26 @@
+<div class="backdrop-blur-md bg-white/20 bg-opacity-20 rounded-xl p-6 shadow-lg text-white max-w-sm mx-auto mb-6 border border-white/30 hover:bg-white/30 transition duration-300">
+  <h3 class="text-2xl font-bold mb-2">{{ weatherCard.city }}</h3>
+  
+  <div class="flex items-center mb-4">
+    <span class="text-5xl font-bold">{{ weatherCard.temperature }}°C</span>
+    <img *ngIf="weatherCard.icon" [src]="weatherCard.icon" alt="Weather icon" class="w-16 h-16 ml-auto">
+  </div>
+  
+  <p class="text-lg mb-4">{{ weatherCard.weather }}</p>
+  
+  <time datetime="" class="block text-sm text-white/80 mb-4">
+    {{ date | date:'EEEE, MMMM d' }}
+  </time>
+  
+  <div class="bg-white/20 p-4 rounded flex items-center justify-center">
+    <div class="flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+      </svg>
+      <div>
+        <span class="text-white/80 mr-2">WIND:</span>
+        <span class="font-semibold">{{ weatherCard.windSpeed }} km/h</span>
+      </div>
+    </div>
+  </div>
+</div>

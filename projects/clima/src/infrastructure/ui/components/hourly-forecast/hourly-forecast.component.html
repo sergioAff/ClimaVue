@@ -1,0 +1,20 @@
+<div class="w-full max-w-4xl mx-auto">
+  <h3 class="text-lg sm:text-xl font-medium text-white/90 mb-3 px-1">Next Hours</h3>
+  <div class="relative">
+    <div class="overflow-x-auto w-full overflow-y-hidden">
+      <div #cardsContainer class="flex gap-3 sm:gap-4 py-2 w-full hide-scrollbar snap-x snap-mandatory"
+        style="scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none; overflow-y: hidden;">
+        <div *ngFor="let card of hourlyForecast" class="snap-start">
+          <app-hourly-card [card]="card"></app-hourly-card>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+</style> 

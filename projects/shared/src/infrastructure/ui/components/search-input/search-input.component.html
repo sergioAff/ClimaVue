@@ -1,0 +1,28 @@
+<div class="animate-fadeIn">
+  <form
+    [formGroup]="cityForm"
+    (ngSubmit)="onSubmit()"
+    class="border border-white/30 rounded-full flex items-center gap-3 p-2 px-4 w-[80dvw] md:w-[75dvw] lg:w-[45dvw] xl:w-[35dvw] bg-white/50 backdrop-blur-sm shadow-md hover:shadow-lg hover:bg-white/25 focus-within:bg-white/30 transition-all duration-300"
+  >
+    <button type="submit" class="flex items-center justify-center p-1 hover:bg-blue-100/30 rounded-full transition-colors">
+      <mat-icon class="z-10 hover:cursor-pointer !text-gray-700 text-2xl">search</mat-icon>
+    </button>
+    <input
+      type="text"
+      placeholder="Search any city..."
+      formControlName="city"
+      class="bg-transparent focus:outline-none text-gray-800 tracking-wide font-medium w-full py-1"
+    />
+  </form>
+  <p class="text-red-400 font-medium text-sm mt-1 pl-2 min-h-[20px]">{{ errorMessage }}</p>
+</div>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+</style>

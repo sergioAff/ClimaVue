@@ -1,0 +1,13 @@
+<div class="min-h-screen w-full">
+
+  <app-background [backgroundImage]="backgroundImage$ | async"></app-background>
+
+  <div class="relative z-10">
+    <lib-main-home 
+      (inputSubmit)="handleInputSubmit($event)"
+      [weatherData]="(weatherData$ | async) ?? []"
+      [isLoading]="(isLoading$ | async) ?? false"
+      [backgroundImage]="backgroundImage$ | async">
+    </lib-main-home>
+  </div>
+</div>
