@@ -1,59 +1,102 @@
 # ClimaVue
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.1.
+ClimaVue es una aplicación web moderna para consultar el clima, desarrollada con Angular 19. Ofrece una interfaz elegante y responsiva para visualizar información meteorológica actualizada.
 
-## Development server
+![ClimaVue Screenshot](projects/app/public/partly-cloudy.svg)
 
-To start a local development server, run:
+## ✨ Características
 
-```bash
-ng serve
-```
+- **Previsión meteorológica actualizada** - Consulta la información del clima en tiempo real
+- **Búsqueda de ubicaciones** - Encuentra fácilmente la previsión meteorológica para cualquier ciudad
+- **Pronóstico por horas** - Visualiza las previsiones del tiempo para las próximas horas
+- **Interfaz moderna y adaptable** - Diseño responsivo que se adapta a cualquier dispositivo
+- **Fondos dinámicos** - Imágenes de fondo que cambian según la condición meteorológica
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🛠️ Tecnologías
 
-## Code scaffolding
+- Angular 19
+- TypeScript
+- Material Design
+- TailwindCSS
+- APIs de pronóstico del tiempo y fondos dinámicos
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🚀 Instalación
 
-```bash
-ng generate component component-name
-```
+### Prerrequisitos
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- Node.js ≥ 18.19
+- NPM o Bun
 
-```bash
-ng generate --help
-```
+### Configuración del proyecto
 
-## Building
+1. Clona este repositorio:
+   ```bash
+   git clone https://github.com/tu-usuario/ClimaVue.git
+   cd ClimaVue
+   ```
 
-To build the project run:
+2. Instala las dependencias:
+   ```bash
+   npm install
+   # o
+   bun install
+   ```
 
-```bash
-ng build
-```
+3. Crea un archivo `projects/shared/src/environment/environment.ts` con tus claves API:
+   ```typescript
+   export const environment = {
+     production: false,
+     apiKeyWeather: 'TU_CLAVE_API_WEATHER',
+     apiKeyWallpaper: 'TU_CLAVE_API_WALLPAPER',
+     apiWeatherGetPlacesPrefix: 'https://www.meteosource.com/api/v1/free/find_places_prefix?text=',
+     apiWeather: 'https://www.meteosource.com/api/v1/free/point?place_id=',
+   };
+   ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+4. Inicia el servidor de desarrollo:
+   ```bash
+   npm start
+   # o
+   bun start
+   ```
 
-## Running unit tests
+5. Abre tu navegador en `http://localhost:4200`
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 📝 Variables de entorno requeridas
 
-```bash
-ng test
-```
+Para un funcionamiento completo, necesitarás las siguientes claves API:
 
-## Running end-to-end tests
+- `apiKeyWeather`: Clave para la API de pronóstico del tiempo (MeteSource)
+- `apiKeyWallpaper`: Clave para la API de imágenes de fondo (Pexels)
+- `apiWeatherGetPlacesPrefix`: Prefijo URL para búsqueda de lugares
+- `apiWeather`: URL base para consulta de clima por ID de lugar
 
-For end-to-end (e2e) testing, run:
+## 🏗️ Estructura del proyecto
 
-```bash
-ng e2e
-```
+El proyecto sigue una arquitectura modular con tres proyectos principales:
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- **app**: Aplicación principal y punto de entrada
+- **shared**: Componentes y servicios compartidos
+- **clima**: Módulo principal de funcionalidad meteorológica
 
-## Additional Resources
+## 📦 Despliegue
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Despliegue en Netlify
+
+1. Conecta tu repositorio a Netlify
+2. Configura las siguientes variables de entorno en Netlify:
+   - `apiKeyWeather`
+   - `apiKeyWallpaper`
+   - `apiWeatherGetPlacesPrefix`
+   - `apiWeather`
+3. Usa la siguiente configuración de despliegue:
+   - Comando de construcción: `npm run build:netlify`
+   - Directorio de publicación: `dist/app/browser`
+
+## 📄 Licencia
+
+[MIT](LICENSE)
+
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas. Por favor, crea un issue antes de enviar un pull request.
