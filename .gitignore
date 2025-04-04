@@ -42,5 +42,6 @@ testem.log
 Thumbs.db
 
 # environment variables
-projects/shared/src/environment/
+# Solo excluir el archivo de desarrollo pero permitir la carpeta y el de producción
 projects/shared/src/environment/environment.ts
+# projects/shared/src/environment/
