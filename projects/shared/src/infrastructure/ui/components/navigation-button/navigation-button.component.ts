@@ -5,8 +5,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   standalone: true,
   template: `
     <button 
-      class="text-white/60 hover:text-white transition-colors"
-      (click)="onClick.emit()">
+      class="text-white/60 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
+      (click)="handleClick()">
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
         class="h-10 w-10" 
@@ -25,4 +25,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class NavigationButtonComponent {
   @Input() direction: 'left' | 'right' = 'left';
   @Output() onClick = new EventEmitter<void>();
+
+  handleClick(): void {
+    console.log(`Navigation button clicked: ${this.direction}`);
+    this.onClick.emit();
+  }
 } 

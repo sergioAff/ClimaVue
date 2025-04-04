@@ -134,31 +134,54 @@ export class MainComponent implements OnInit, OnDestroy {
     try {
       const weather = weatherData[0];
       
+      // Depuración detallada
+      console.log('Current weather data structure:', JSON.stringify(weather.current, null, 2));
+      if (weather.hourly && weather.hourly.data && weather.hourly.data.length > 0) {
+        console.log('Hourly data example:', JSON.stringify(weather.hourly.data[0], null, 2));
+      }
+      
+      // Función para extraer valores con seguridad
+      const safeGet = (obj: any, path: string, defaultValue: any = 0) => {
+        const keys = path.split('.');
+        let result = obj;
+        for (const key of keys) {
+          if (result === undefined || result === null) return defaultValue;
+          result = result[key];
+        }
+        return (result !== undefined && result !== null) ? result : defaultValue;
+      };
+      
       const currentWeatherCard: WeatherCard = {
         id: 1,
         city: cityName,
-        temperature: weather.current.temperature,
-        weather: weather.current.summary,
-        humidity: 75,
-        windSpeed: weather.current.wind.speed,
-        visibility: 10,
-        pressure: 1000,
+        temperature: safeGet(weather, 'current.temperature'),
+        weather: safeGet(weather, 'current.summary', ''),
+        humidity: safeGet(weather, 'current.humidity'),
+        windSpeed: safeGet(weather, 'current.wind.speed'),
+        visibility: safeGet(weather, 'current.visibility'),
+        pressure: safeGet(weather, 'current.pressure'),
         icon: weather.current.icon ? `https://www.meteosource.com/static/img/ico/weather/${weather.current.icon}.svg` : ''
       };
       
+      console.log('Mapped current weather card:', currentWeatherCard);
+      
       const hourlyWeatherCards: WeatherCard[] = weather.hourly?.data
         .slice(0, 5)
-        .map((hourlyData, index) => ({
-          id: index + 2,
-          city: `${cityName} - ${new Date(hourlyData.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
-          temperature: hourlyData.temperature,
-          weather: hourlyData.summary,
-          humidity: 75,
-          windSpeed: hourlyData.wind.speed,
-          visibility: 10,
-          pressure: 1000,
-          icon: hourlyData.icon ? `https://www.meteosource.com/static/img/ico/weather/${hourlyData.icon}.svg` : ''
-        })) || [];
+        .map((hourlyData, index) => {
+          const card = {
+            id: index + 2,
+            city: `${cityName} - ${new Date(hourlyData.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
+            temperature: safeGet(hourlyData, 'temperature'),
+            weather: safeGet(hourlyData, 'summary', ''),
+            humidity: safeGet(hourlyData, 'humidity'),
+            windSpeed: safeGet(hourlyData, 'wind.speed'),
+            visibility: safeGet(hourlyData, 'visibility'),
+            pressure: safeGet(hourlyData, 'pressure'),
+            icon: hourlyData.icon ? `https://www.meteosource.com/static/img/ico/weather/${hourlyData.icon}.svg` : ''
+          };
+          console.log(`Hourly card ${index}:`, card);
+          return card;
+        }) || [];
       
       return [currentWeatherCard, ...hourlyWeatherCards];
     } catch (error) {

@@ -5,7 +5,7 @@ import { NgFor, NgIf } from '@angular/common';
 @Component({
   selector: 'app-current-weather',
   standalone: true,
-  imports: [WeatherMetricComponent, NgFor, NgIf],
+  imports: [WeatherMetricComponent, NgFor],
   templateUrl: './current-weather.component.html'
 })
 export class CurrentWeatherComponent {
@@ -14,9 +14,6 @@ export class CurrentWeatherComponent {
 
   // Array de métricas para mostrar
   weatherMetrics = [
-    { label: 'HUMIDITY', value: () => this.weather?.humidity, unit: '%' },
-    { label: 'VISIBILITY', value: () => this.weather?.visibility, unit: 'km' },
-    { label: 'AIR PRESSURE', value: () => this.weather?.pressure, unit: 'hPa' },
-    { label: 'WIND', value: () => this.weather?.windSpeed, unit: 'mph' }
+    { label: 'WIND', value: () => this.weather?.windSpeed, unit: 'km/h' }
   ];
 } 

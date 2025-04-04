@@ -14,11 +14,19 @@ export class GetWeatherService {
   private apiKey = environment.apiKeyWeather;
 
   execute(placeId: string): Observable<IWeather[]> {
+    // Construir URL con todos los parámetros necesarios
+    const url = `${this.apiUrl}${placeId}&sections=current%2Chourly%2Cdaily&language=en&units=metric&key=${this.apiKey}`;
+    
+    console.log('API request URL:', url);
+    
     return this.http.get<IWeather>(
-      `${this.apiUrl}${placeId}&sections=current%2Chourly&language=en&units=metric&key=${this.apiKey}`,
+      url,
       { headers: this.getHeaders() }
     ).pipe(
-      map(response => [response as IWeather]) 
+      map(response => {
+        console.log('API Response:', JSON.stringify(response, null, 2));
+        return [response as IWeather];
+      }) 
     );
   }
 
