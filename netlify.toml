@@ -5,4 +5,11 @@
 [[redirects]]
   from = "/*"
   to = "/index.html"
-  status = 200 
+  status = 200
+  
+[build.environment]
+  # Las variables están configuradas en la interfaz de Netlify
+  NODE_VERSION = "18.18.0"
+
+[[plugins]]
+  package = "./netlify/plugins/inject-env-vars" 
